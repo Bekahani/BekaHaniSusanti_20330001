@@ -1,0 +1,236 @@
+<?php
+session_start();
+if(!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    die();
+}
+?>
+<!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="breadcomb-wp">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link href="assets/css/bootstrap.css" rel="stylesheet" />
+        <!-- FONTAWESOME STYLES-->
+        <link href="assets/css/font-awesome.css" rel="stylesheet" />
+        <!-- MORRIS CHART STYLES-->
+
+        <!-- CUSTOM STYLES-->
+        <link href="assets/css/custom.css" rel="stylesheet" />
+        <!-- GOOGLE FONTS-->
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+        <!-- TABLE STYLES-->
+        <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+
+        <style>
+            span {
+                font-size: 16px;
+            }
+        </style>
+    </head>
+
+     <body>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Advanced Tables -->
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <span>Kritik Dan Saran</span>
+                        <span title="Tambah Data"><button style="float: right;" class="btn-md btn btn-success"data-toggle="modal" data-target="#myModal">
+                            <b>+ Tambah</b>
+                    </button></span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Kode</th>
+                                        <th>Tanggal</th>
+                                        <th>Kitik/Saran</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <?php 
+
+                                    $no = 1;
+                                    $sql = mysqli_query($koneksi, "SELECT * FROM kas WHERE jenis = 'masuk' ");
+                                    while ($data = mysqli_fetch_assoc($sql)) {
+
+                                ?>
+                                        <tr class="odd gradeX">
+                                            <td>
+                                                <?php echo $no++; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $data['kode']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo date('d F Y', strtotime($data['tgl'])); ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $data['keterangan']; ?>
+                                            </td>
+                                            <td>
+                                                <a id="edit_data" data-toggle="modal" data-target="#edit<?= $data['kode'] ?>" data-id="<?php echo $data['kode']; ?>" data-ket="<?php echo $data['keterangan']; ?>" data-tgl="<?php echo $data['tgl']; ?>" class="btn btn-warning btn-md" title="Ubah Data"><i class="fa fa-edit"> </i></a>
+                                                <a onclick="return confirm('Apakah anda yakin ingin menghapus data?')" href="?saran&aksi=hapus&id=<?php echo $data['kode'];?>" class="btn btn-danger btn-md" title="Hapus Data"><i class="fa fa-trash"> </i></a>
+                                            </td>
+
+                                        </tr>
+                                          <!-- Halaman Ubah -->
+                            <div class="panel-body">
+                                <div class="modal fade" id="edit<?= $data['kode'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">Form Ubah Data</h4>
+                                            </div>
+                                            <div class="modal-body" id="modal_edit">
+                                                <form role="form" method="POST">
+                                                    <div class="form-group">
+                                                        <label>Kode</label>
+                                                        <input value="<?= $data['kode'] ?>" class="form-control" name="kode" placeholder="Input Kode" id="kode"  />
+                                                    </div>
+                                                    <div>
+                                                        <label>Keterangan</label>
+                                                        <textarea  class="form-control" rows="3" name="ket" id="ket"><?= $data['keterangan'] ?></textarea>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Tanggal</label>
+                                                        <input value="<?= $data['tgl'] ?>" class="form-control" type="date" name="tgl" id="tgl" />
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                                <button type="submit" name="ubah<?= $data['kode'] ?>" class="btn btn-primary">Simpan</button>
+                                                </form>
+
+                                    <?php 
+                                        if(isset($_POST["ubah" . $data['kode']])) {
+                                            $kode = $_POST['kode'];
+                                            $ket = $_POST['ket'];
+                                            $tgl = $_POST['tgl'];
+
+                                            $sql = mysqli_query($koneksi, "UPDATE kas SET keterangan = '$ket', tgl = '$tgl', kode = '$kode' ");
+                                            if($sql) {
+                                                echo "
+                                                    <script>
+                                                    alert('Data Berhasil Diubah');
+                                                    document.location.href = '';
+                                                    </script>";     
+                                            }
+                                        }
+                                    ?>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <!--  Halaman Tambah-->
+                        <div class="panel-body">
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Form Tambah Data</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form role="form" method="POST">
+                                                <div class="form-group">
+                                                    <label>Kode</label>
+                                                    <input class="form-control" name="kode" placeholder="Input Kode" />
+                                                </div>
+                                                <div>
+                                                    <label>Keterangan</label>
+                                                    <textarea class="form-control" rows="3" name="ket"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Tanggal</label>
+                                                    <input class="form-control" type="date" name="tgl" />
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                            <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <?php 
+                    if(isset($_POST['simpan'])) {
+                        $kode = $_POST['kode'];
+                        $tgl = $_POST['tgl'];
+                        $ket = $_POST['ket'];
+
+                        $sql = mysqli_query($koneksi, "INSERT INTO kas (kode, keterangan, tgl) VALUES ('$kode', '$ket', '$tgl',)");
+
+                        if($sql) {
+
+                            echo "
+                                <script>
+                                alert('Data Berhasil Ditambahkan');
+                                document.location.href = '';
+                                </script>";   
+                        }
+                    }
+                ?>
+                            <!-- Akhir Halaman Tambah -->
+
+                          
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+        <!-- JQUERY SCRIPTS -->
+        <script src="assets/js/jquery-1.10.2.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#dataTables-example').dataTable();
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).on("click", "#edit_data", function() {
+                var kode = $(this).data('id');
+                var ket = $(this).data('ket');
+                var tgl = $(this).data('tgl');
+
+                $("#modal_edit #kode").val(kode);
+                $("#modal_edit #ket").val(ket);
+                $("#modal_edit #tgl").val(tgl);
+
+            })
+        </script>
+
+    </body>
+
+    </html>
