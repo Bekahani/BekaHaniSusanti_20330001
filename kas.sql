@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 19 Agu 2018 pada 11.59
--- Versi Server: 10.1.25-MariaDB
--- PHP Version: 5.6.31
+-- Waktu pembuatan: 15 Jun 2023 pada 12.15
+-- Versi server: 10.4.27-MariaDB
+-- Versi PHP: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -35,16 +34,19 @@ CREATE TABLE `kas` (
   `jumlah` int(10) NOT NULL,
   `jenis` varchar(20) NOT NULL,
   `keluar` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data untuk tabel `kas`
 --
 
 INSERT INTO `kas` (`kode`, `keterangan`, `tgl`, `jumlah`, `jenis`, `keluar`) VALUES
-(1165, 'test keluar', '2018-08-19', 0, 'keluar', 25000),
-(2165, 'test masuk', '2018-08-19', 50000, 'masuk', 0),
-(2166, 'test masuk 2', '2018-08-19', 30000, 'masuk', 0);
+(2169, 'Hasil Pemancingan', '2023-05-03', 10000000, 'masuk', 0),
+(2170, 'Hasil penjualan makanan', '2023-06-13', 2700000, 'masuk', 0),
+(2171, 'Beli cctv', '2023-05-29', 0, 'keluar', 3500000),
+(2175, 'Konsumsi kerja bakti', '2023-06-03', 0, 'keluar', 250000),
+(2176, 'Kas Arisan', '2023-06-05', 300000, 'masuk', 0),
+(2177, 'Donatur ', '2023-06-10', 25000000, 'masuk', 0);
 
 -- --------------------------------------------------------
 
@@ -56,41 +58,49 @@ CREATE TABLE `tb_user` (
   `id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `nama` varchar(200) NOT NULL,
-  `level` varchar(100) NOT NULL,
-  `foto` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `nama` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data untuk tabel `tb_user`
+--
+
+INSERT INTO `tb_user` (`id`, `username`, `password`, `nama`) VALUES
+(1, 'Admin', 'admin123', 'Administrator'),
+(2, 'umum', 'umum123', '');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `kas`
+-- Indeks untuk tabel `kas`
 --
 ALTER TABLE `kas`
   ADD PRIMARY KEY (`kode`);
 
 --
--- Indexes for table `tb_user`
+-- Indeks untuk tabel `tb_user`
 --
 ALTER TABLE `tb_user`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `kas`
+-- AUTO_INCREMENT untuk tabel `kas`
 --
 ALTER TABLE `kas`
-  MODIFY `kode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2169;
+  MODIFY `kode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2178;
+
 --
--- AUTO_INCREMENT for table `tb_user`
+-- AUTO_INCREMENT untuk tabel `tb_user`
 --
 ALTER TABLE `tb_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
